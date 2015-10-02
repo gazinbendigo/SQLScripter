@@ -1,0 +1,24 @@
+apply plugin: 'java'
+
+version = '1.0'
+sourceCompatibility = '1.8'
+
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["src/main/resources"]
+            includes = ["**/*.fxml"]
+        }
+    }
+}
+
+task exportJar(type: Jar) {
+    manifest{
+        attributes 'Implementation-Title' : 'SQLSripting tool',
+                'Implementation-Version' : version,
+                'Main-Class' : 'main.java.scripter.Main'
+    }
+    baseName = project.name
+    from {  configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
